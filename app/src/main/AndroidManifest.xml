@@ -4,6 +4,7 @@
     package="com.example.gymfitness" >
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD"/>
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
@@ -24,10 +25,13 @@
         android:theme="@style/Theme.GymFitness"
         android:usesCleartextTraffic="true"
         tools:targetApi="31" >
-
+        <property
+            android:name="android.adservices.AD_SERVICES_CONFIG"
+            android:resource="@xml/gma_ad_services_config"
+            tools:replace="android:resource" />
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-6887234432611994~9108113180"/>
+            android:value="ca-app-pub-3940256099942544~3347511713"/>
 
 
         <receiver android:name=".receivers.NotificationReceiver" />
@@ -77,7 +81,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
