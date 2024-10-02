@@ -124,7 +124,7 @@ public class GymFitnessAplication extends Application implements Application.Act
                     super.onAdLoaded(appOpenAd);
                     AppOpenAdManager.this.appOpenAd = appOpenAd;
                     isLoadingAd = false;
-                    Toast.makeText(context, "Ad loaded", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(context, "Ad loaded", Toast.LENGTH_SHORT).show();
                 }
             });
         }
