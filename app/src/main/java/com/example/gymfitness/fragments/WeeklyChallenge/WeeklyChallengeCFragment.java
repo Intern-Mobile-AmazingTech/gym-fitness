@@ -28,6 +28,12 @@ import com.example.gymfitness.databinding.FragmentWeeklyChallengeCBinding;
 import com.example.gymfitness.helpers.FavoriteHelper;
 import com.example.gymfitness.helpers.ProgressTrackHelper;
 import com.example.gymfitness.viewmodels.SharedViewModel;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 
 import java.util.Objects;
 
@@ -49,6 +55,31 @@ public class WeeklyChallengeCFragment extends Fragment {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_weekly_challenge_c,container,false);
 
         sharedViewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
+
+
+        // Initialize the Mobile Ads SDK
+        MobileAds.initialize(getContext(), new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+                Log.e("Test", "SDK initialized successfully");
+            }
+        });
+        AdRequest adRequest = new AdRequest.Builder().build();
+        binding.adView.loadAd(adRequest);
+
+        binding.adView.setAdListener(new AdListener() {
+            @Override
+            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                super.onAdFailedToLoad(loadAdError);
+                binding.adView.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+                binding.adView.setVisibility(View.VISIBLE);
+            }
+        });
 
         return binding.getRoot();
     }
