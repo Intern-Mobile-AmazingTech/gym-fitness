@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.gymfitness.R;
 import com.example.gymfitness.adapters.WorkoutAdapter;
+import com.example.gymfitness.admob.AdsServices;
 import com.example.gymfitness.data.entities.Workout;
 import com.example.gymfitness.databinding.FragmentWorkoutBinding;
 import com.example.gymfitness.helpers.FavoriteHelper;
@@ -158,16 +159,9 @@ public class WorkoutFragment extends Fragment {
             binding.btnAdvanced.setBackgroundTintList(colorStateList);
         });
 
+        // show banner ads
+        AdsServices.showBannerAds(binding.adView, getContext());
 
-        // Initialize the Mobile Ads SDK
-        MobileAds.initialize(getContext(), new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {
-                Log.e("Test", "SDK initialized successfully");
-            }
-        });
-        AdRequest adRequest = new AdRequest.Builder().build();
-        binding.adView.loadAd(adRequest);
 
     }
 }
