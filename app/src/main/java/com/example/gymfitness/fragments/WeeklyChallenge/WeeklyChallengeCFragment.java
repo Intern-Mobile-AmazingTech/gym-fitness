@@ -22,6 +22,7 @@ import androidx.navigation.Navigation;
 
 import com.bumptech.glide.Glide;
 import com.example.gymfitness.R;
+import com.example.gymfitness.admob.AdsServices;
 import com.example.gymfitness.data.entities.Exercise;
 import com.example.gymfitness.data.entities.Workout;
 import com.example.gymfitness.databinding.FragmentWeeklyChallengeCBinding;
@@ -55,32 +56,6 @@ public class WeeklyChallengeCFragment extends Fragment {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_weekly_challenge_c,container,false);
 
         sharedViewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
-
-
-        // Initialize the Mobile Ads SDK
-        MobileAds.initialize(getContext(), new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {
-                Log.e("Test", "SDK initialized successfully");
-            }
-        });
-        AdRequest adRequest = new AdRequest.Builder().build();
-        binding.adView.loadAd(adRequest);
-
-        binding.adView.setAdListener(new AdListener() {
-            @Override
-            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                super.onAdFailedToLoad(loadAdError);
-                binding.adView.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onAdLoaded() {
-                super.onAdLoaded();
-                binding.adView.setVisibility(View.VISIBLE);
-            }
-        });
-
         return binding.getRoot();
     }
     private  void loadWorkoutData() {
@@ -154,7 +129,10 @@ public class WeeklyChallengeCFragment extends Fragment {
         });
 
         FavoriteHelper.checkFavorite(exerciseFavorite, getContext(), binding.star);
+        AdsServices.showBannerAds(binding.adView, getContext());
+
     }
+
     private void saveProgress() {
         progressTrackHelper = new ProgressTrackHelper();
         Workout selectedValue = sharedViewModel.getSelected().getValue();

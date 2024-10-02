@@ -171,29 +171,9 @@ public class ExerciseDetailFragment extends Fragment {
 
         FavoriteHelper.checkFavorite(exerciseFavorite, getContext(), binding.star);
 
-        // Initialize the Mobile Ads SDK
-        MobileAds.initialize(getContext(), new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {
-                Log.e("Test", "SDK initialized successfully");
-            }
-        });
-        AdRequest adRequest = new AdRequest.Builder().build();
-        binding.adView.loadAd(adRequest);
+        // show banner ads
+        AdsServices.showBannerAds(binding.adView, getContext());
 
-        binding.adView.setAdListener(new AdListener() {
-            @Override
-            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                super.onAdFailedToLoad(loadAdError);
-                binding.adView.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onAdLoaded() {
-                super.onAdLoaded();
-                binding.adView.setVisibility(View.VISIBLE);
-            }
-        });
     }
     @Override
     public void onResume() {

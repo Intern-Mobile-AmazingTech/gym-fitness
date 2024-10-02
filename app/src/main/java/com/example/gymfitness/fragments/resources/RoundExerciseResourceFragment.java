@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.bumptech.glide.Glide;
 import com.example.gymfitness.R;
 import com.example.gymfitness.adapters.home.RoundRCVAdapter;
+import com.example.gymfitness.admob.AdsServices;
 import com.example.gymfitness.data.entities.Exercise;
 import com.example.gymfitness.data.entities.Round;
 import com.example.gymfitness.data.entities.Workout;
@@ -95,29 +96,8 @@ public class RoundExerciseResourceFragment extends Fragment {
 
         FavoriteHelper.checkFavorite(workout, getContext(), binding.imgStar);
 
-        // Initialize the Mobile Ads SDK
-        MobileAds.initialize(getContext(), new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {
-                Log.e("Test", "SDK initialized successfully");
-            }
-        });
-        AdRequest adRequest = new AdRequest.Builder().build();
-        binding.adView.loadAd(adRequest);
-
-        binding.adView.setAdListener(new AdListener() {
-            @Override
-            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                super.onAdFailedToLoad(loadAdError);
-                binding.adView.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onAdLoaded() {
-                super.onAdLoaded();
-                binding.adView.setVisibility(View.VISIBLE);
-            }
-        });
+        // show banner ads
+        AdsServices.showBannerAds(binding.adView, getContext());
     }
 
     @Override
