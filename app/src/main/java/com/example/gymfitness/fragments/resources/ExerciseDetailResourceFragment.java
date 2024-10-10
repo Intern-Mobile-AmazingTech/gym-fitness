@@ -19,7 +19,6 @@ import androidx.media3.exoplayer.ExoPlayer;
 
 import com.bumptech.glide.Glide;
 import com.example.gymfitness.R;
-import com.example.gymfitness.admob.AdsServices;
 import com.example.gymfitness.data.entities.Exercise;
 import com.example.gymfitness.data.entities.Workout;
 import com.example.gymfitness.databinding.FragmentExerciseDetailBinding;
@@ -27,12 +26,6 @@ import com.example.gymfitness.helpers.FavoriteHelper;
 import com.example.gymfitness.helpers.ProgressTrackHelper;
 import com.example.gymfitness.utils.UserData;
 import com.example.gymfitness.viewmodels.SharedViewModel;
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.LoadAdError;
-import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.initialization.InitializationStatus;
-import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 
 import java.util.Objects;
 
@@ -51,7 +44,6 @@ public class ExerciseDetailResourceFragment extends Fragment {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_exercise_detail, container, false);
         sharedViewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
         level = UserData.getUserLevel(getContext());
-        AdsServices.loadFullscreenADS(getContext());
         return binding.getRoot();
     }
 
@@ -92,15 +84,6 @@ public class ExerciseDetailResourceFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         binding.play.setOnClickListener(v -> {
-            sharedViewModel.increaseCountEx();
-            sharedViewModel.getCountEx().observe(getViewLifecycleOwner(), count -> {
-                if(count % 3 == 0)
-                {
-                    Log.d("helloooooooooooooo","Quang cao di em oi");
-                    AdsServices.showADSFullscreen(getContext());
-                }
-                Log.d("helloooooooooooooo",String.valueOf(count));
-            });
             binding.cardView.setVisibility(View.GONE);
             binding.headerLayout.setBackgroundColor(Color.parseColor("#FF000000"));
             binding.videoView.setVisibility(View.VISIBLE);
@@ -124,8 +107,6 @@ public class ExerciseDetailResourceFragment extends Fragment {
         });
 
         FavoriteHelper.checkFavorite(exerciseFavorite, getContext(), binding.star);
-        // show banner ads
-        AdsServices.showBannerAds(binding.adView, getContext());
     }
 
     private void saveProgress() {

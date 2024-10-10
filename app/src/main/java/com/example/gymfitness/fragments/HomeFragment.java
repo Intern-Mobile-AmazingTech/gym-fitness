@@ -5,8 +5,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -15,18 +13,10 @@ import androidx.navigation.NavController;
 import com.example.gymfitness.R;
 import com.example.gymfitness.adapters.home.ArticlesTipsRCVAdapter;
 import com.example.gymfitness.adapters.home.RecommendExRCVApdater;
-import com.example.gymfitness.admob.AdsServices;
 import com.example.gymfitness.data.entities.Workout;
 import com.example.gymfitness.databinding.FragmentHomeBinding;
 import com.example.gymfitness.viewmodels.HomeViewModel;
 import com.example.gymfitness.viewmodels.SharedViewModel;
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.LoadAdError;
-import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.initialization.InitializationStatus;
-import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
-
 import androidx.databinding.DataBindingUtil;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -160,6 +150,6 @@ public class HomeFragment extends Fragment {
                 });
             }
         });
-        AdsServices.showBannerAds(binding.adView, getContext());
+
     }
 }
