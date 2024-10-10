@@ -12,6 +12,7 @@ import androidx.annotation.OptIn;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.media3.common.MediaItem;
 import androidx.media3.common.util.UnstableApi;
@@ -26,6 +27,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.gymfitness.R;
+import com.example.gymfitness.admob.AdsServices;
 import com.example.gymfitness.data.entities.Exercise;
 import com.example.gymfitness.data.entities.Workout;
 import com.example.gymfitness.data.entities.WorkoutLog;
@@ -34,10 +36,27 @@ import com.example.gymfitness.helpers.FavoriteHelper;
 import com.example.gymfitness.helpers.ProgressTrackHelper;
 import com.example.gymfitness.utils.UserData;
 import com.example.gymfitness.viewmodels.SharedViewModel;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdLoader;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.MediaAspectRatio;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
+import com.google.android.gms.ads.nativead.NativeAd;
+import com.google.android.gms.ads.nativead.NativeAdOptions;
+import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAd;
+import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAdLoadCallback;
 
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ForkJoinPool;
 
 public class ExerciseDetailFragment extends Fragment {
 
@@ -49,11 +68,11 @@ public class ExerciseDetailFragment extends Fragment {
     private Dialog progressDialog;
     private ProgressTrackHelper progressTrackHelper;
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_exercise_detail, container, false);
         sharedViewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
+        AdsServices.loadFullscreenADS(getContext());
         return binding.getRoot();
     }
 
@@ -113,7 +132,17 @@ public class ExerciseDetailFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         binding.play.setOnClickListener(v -> {
+            sharedViewModel.increaseCountEx();
+            sharedViewModel.getCountEx().observe(getViewLifecycleOwner(), count -> {
+                if(count % 3 == 0)
+                {
+                    Log.d("helloooooooooooooo","Quang cao di em oi");
+                    AdsServices.showADSFullscreen(getContext());
+                }
+                Log.d("helloooooooooooooo",String.valueOf(count));
+            });
             binding.cardView.setVisibility(View.GONE);
             binding.headerLayout.setBackgroundColor(Color.parseColor("#FF000000"));
             binding.videoView.setVisibility(View.VISIBLE);
@@ -124,12 +153,12 @@ public class ExerciseDetailFragment extends Fragment {
             progressDialog.show();
             playVideo(urlVideo);
 
+
             // save progess
             saveProgress();
 
             // congratulation navigate
         });
-
 
         // set favorite
         Exercise exerciseFavorite = sharedViewModel.getExerciseSelected().getValue();
@@ -141,8 +170,11 @@ public class ExerciseDetailFragment extends Fragment {
         });
 
         FavoriteHelper.checkFavorite(exerciseFavorite, getContext(), binding.star);
-    }
 
+        // show banner ads
+        AdsServices.showBannerAds(binding.adView, getContext());
+
+    }
     @Override
     public void onResume() {
         super.onResume();
