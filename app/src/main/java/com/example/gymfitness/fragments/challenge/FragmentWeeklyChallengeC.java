@@ -22,6 +22,7 @@ import androidx.navigation.Navigation;
 
 import com.bumptech.glide.Glide;
 import com.example.gymfitness.R;
+import com.example.gymfitness.admob.AdsServices;
 import com.example.gymfitness.data.entities.Exercise;
 import com.example.gymfitness.data.entities.Round;
 import com.example.gymfitness.data.entities.Workout;
@@ -32,6 +33,12 @@ import com.example.gymfitness.helpers.ProgressTrackHelper;
 import com.example.gymfitness.utils.UserData;
 import com.example.gymfitness.viewmodels.ExerciseRoutineViewModel;
 import com.example.gymfitness.viewmodels.SharedViewModel;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 
 import java.util.Objects;
 
@@ -127,6 +134,7 @@ public class FragmentWeeklyChallengeC extends Fragment {
         });
 
         FavoriteHelper.checkFavorite(exerciseFavorite, getContext(), binding.star);
+        AdsServices.showBannerAds(binding.adView, getContext());
     }
 
     private void saveProgress() {

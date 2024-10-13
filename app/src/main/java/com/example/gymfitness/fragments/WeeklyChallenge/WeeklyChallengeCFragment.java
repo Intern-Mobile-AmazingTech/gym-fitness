@@ -22,12 +22,19 @@ import androidx.navigation.Navigation;
 
 import com.bumptech.glide.Glide;
 import com.example.gymfitness.R;
+import com.example.gymfitness.admob.AdsServices;
 import com.example.gymfitness.data.entities.Exercise;
 import com.example.gymfitness.data.entities.Workout;
 import com.example.gymfitness.databinding.FragmentWeeklyChallengeCBinding;
 import com.example.gymfitness.helpers.FavoriteHelper;
 import com.example.gymfitness.helpers.ProgressTrackHelper;
 import com.example.gymfitness.viewmodels.SharedViewModel;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 
 import java.util.Objects;
 
@@ -49,7 +56,6 @@ public class WeeklyChallengeCFragment extends Fragment {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_weekly_challenge_c,container,false);
 
         sharedViewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
-
         return binding.getRoot();
     }
     private  void loadWorkoutData() {
@@ -123,7 +129,10 @@ public class WeeklyChallengeCFragment extends Fragment {
         });
 
         FavoriteHelper.checkFavorite(exerciseFavorite, getContext(), binding.star);
+        AdsServices.showBannerAds(binding.adView, getContext());
+
     }
+
     private void saveProgress() {
         progressTrackHelper = new ProgressTrackHelper();
         Workout selectedValue = sharedViewModel.getSelected().getValue();
